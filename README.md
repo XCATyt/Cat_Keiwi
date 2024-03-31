@@ -3,7 +3,7 @@
 ### Who doesn't want a pet?
 
 - <p >You can play games with Keiwi,</p>
-- <p >you can talk to him too!</p>
+- <p >you can talk to him too! </p>
 
 - <p style="color: yellow;">Made by <a href="https://www.youtube.com/channel/UCCP94uce_DRI9Oe5nhvJ9Nw">XKEDI</a></p>
 - <p style="color: greenyellow;">🕑 Made in 2 days</p>
