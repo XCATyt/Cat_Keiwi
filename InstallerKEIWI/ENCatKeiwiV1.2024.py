@@ -1,40 +1,49 @@
-from tkinter import Tk
-from tkinter.ttk import Label, Progressbar, Button
-from requests import get
-from os.path import expanduser, join
+import os
+import requests
+import tkinter as tk
+from tkinter import filedialog
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
 
-Ilist = [
-    "https://github.com/murat725178252/Cat-Keiwi/raw/main/EN/CatKeiwi.exe",
-    "https://github.com/murat725178252/Cat-Keiwi/raw/main/EN/Data/idle.png",
-    "https://github.com/murat725178252/Cat-Keiwi/raw/main/EN/Data/sitting.png",
-]
+def download_files():
+    # GitHub URL'si
+    url = "https://github.com/murat725178252/Cat-Keiwi/tree/main/EN/"
 
-def download_file(url, save_path):
-    response = get(url)
-    with open(save_path, 'wb') as f:
-        f.write(response.content)
-    print("Dosya başarıyla indirildi:", save_path)
+    # Hedef dizin seç
+    target_dir = filedialog.askdirectory()
+    if not target_dir:
+        return
 
-def start_download():
-    for i in range(len(Ilist)):
-        url = Ilist[i]
-        file_name = url.split("/")[-1]  # URL'den dosya adını al
-        save_path = join(expanduser("~"), "Desktop", file_name)
-        download_file(url, save_path)
+    # Eğer hedef dizin yoksa oluştur
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
 
-def ui():
-    global download, progressbar
-    download = Tk()
-    download.geometry("400x200")
-    progressbar = Progressbar(download, orient="horizontal", length=350, mode="determinate")
-    status = Label(download, text="Downloading Keiwi Cat")
-    start_button = Button(download, text="Start Download", command=start_download)
+    # Sayfayı indir ve parse et
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-    progressbar.pack(pady=10)
-    status.pack(pady=5)
-    start_button.pack(pady=5)
+    # Tüm dosya linklerini bul
+    file_links = [urljoin(url, link["href"]) for link in soup.select("a[href$='.']")]
 
-    download.mainloop()
+    # Dosyaları indir
+    for file_link in file_links:
+        # Dosya adını al
+        filename = os.path.basename(file_link)
+        # Dosyayı indir
+        response = requests.get(file_link)
+        # Dosyayı kaydet
+        with open(os.path.join(target_dir, filename), "wb") as f:
+            f.write(response.content)
 
-if __name__ == "__main__":
-    ui()
+    print("Dosyalar başarıyla indirildi.")
+
+# Ana pencere oluştur
+root = tk.Tk()
+root.title("GitHub Dosya İndirme Aracı")
+
+# Yükle butonunu ekle
+download_button = tk.Button(root, text="Dosyaları İndir", command=download_files)
+download_button.pack(pady=10)
+
+# Pencereyi göster
+root.mainloop()
