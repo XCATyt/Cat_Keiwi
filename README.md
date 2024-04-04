@@ -15,7 +15,7 @@
 <blockquote>
     <p><a href="https://github.com/XCATyt/Cat_Keiwi/raw/main/Languages/EN/EN.zip">EN | Keiwi Cat </a></p>
     <p><a href="https://github.com/XCATyt/Cat_Keiwi/raw/main/Languages/TR/TR.zip">TR | Keiwi Kedi </a></p>
-    <p><a href="https://google.com">DE | Coming Soon... </a></p>
+    <p><a href="https://github.com/XCATyt/Cat_Keiwi/blob/main/Languages/na.md">DE | Coming Soon... </a></p>
 
 </blockquote>
 
